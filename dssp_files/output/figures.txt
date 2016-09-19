@@ -1,0 +1,138 @@
+raw<-read.table('rel_results.txt', header=T)
+opt <- options("scipen" = 20)
+
+pdf('figure11.pdf', useDingbats=F)
+plot(raw$transw,raw$extraw, pch=20, log='xy', ylim=c(0.02,2), xlim=c(0.0005,5), frame.plot=F, xlab=expression('Average Transmembrane '~omega), ylab=expression('Average Extramembrane '~omega), cex.lab=1.2)
+abline(0,1)
+dev.off()
+
+pdf('figure12_mean.pdf', useDingbats=F)
+plot(raw$transw[raw$chemo==0],raw$extraw[raw$chemo==0], pch=21, bg='snow3', log='xy', cex=.6, frame.plot=F, xlab=expression('Average Transmembrane '~omega), ylab=expression('Average Extramembrane '~omega), cex.lab=1.2)
+points(raw$transw[raw$chemo==1],raw$extraw[raw$chemo==1], pch=20)
+abline(h=mean(raw$extraw[raw$chemo==0]))
+abline(v=mean(raw$transw[raw$chemo==0]))
+dev.off()
+
+pdf('figure12_median.pdf', useDingbats=F)
+plot(raw$transw[raw$chemo==0],raw$extraw[raw$chemo==0], pch=21, bg='snow3', log='xy', cex=.6, frame.plot=F, xlab=expression('Average Transmembrane '~omega), ylab=expression('Average Extramembrane '~omega), cex.lab=1.2)
+points(raw$transw[raw$chemo==1],raw$extraw[raw$chemo==1], pch=20)
+abline(h=median(raw$extraw[raw$chemo==0]))
+abline(v=median(raw$transw[raw$chemo==0]))
+dev.off()
+
+#length(which((raw$transw[raw$chemo==1]>mean(raw$transw[raw$chemo==0])) & (raw$extraw[raw$chemo==1]>mean(raw$extraw[raw$chemo==0])) ))
+
+pdf('figure2.pdf', useDingbats=F)
+new=raw[raw$trans_sd>0,]
+trans=new$trans_sd/new$transw
+extra=new$extra_sd/new$extraw
+plot(trans, extra, log='xy', pch=20, xlim=c(0.5,10), frame.plot=F, xlab=expression('Normalized Transmembrane SD of'~omega), ylab=expression('Normalized Extramembrane SD of '~omega), cex.lab=1.2)
+abline(0,1)
+dev.off()
+
+
+##############SITE RATE FIGURE
+
+pdf('Site_Rates.pdf', useDingbats=F)
+par(mfrow=c(2,2))
+sites<-read.table('siterates/ENST00000302581.txt')
+plot(sites$V1, sites$V4, main='OR5B2', xlab='Site Index', ylab=~omega, pch=20, ylim=c(-0.05,2.5), frame.plot=F, cex.lab=1.2)
+points(sites$V1[sites$V3=='Inner'], sites$V4[sites$V3=='Inner'], col='gray80', pch=20)
+points(sites$V1[sites$V3=='Outer'], sites$V4[sites$V3=='Outer'], col='gray48', pch=20)
+points(sites$V1[sites$V3=='Trans'], sites$V4[sites$V3=='Trans'], col='black', pch=20)
+abline(h=1)
+
+for (n in 1:nrow(sites)){
+	if (sites$V3[n]=='Inner'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray80')
+	}
+	if (sites$V3[n]=='Outer'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray48')
+	}
+	if (sites$V3[n]=='Trans'){
+		segments(sites$V1[n],-0.05,sites$V1[n],-0.8, col='black')
+	}		
+}
+sites<-read.table('siterates/ENST00000249284.txt')
+plot(sites$V1, sites$V4, main='TAS2R16', xlab='Site Index', ylab=~omega, pch=20, ylim=c(-0.05,2.5), frame.plot=F, cex.lab=1.2)
+points(sites$V1[sites$V3=='Inner'], sites$V4[sites$V3=='Inner'], col='gray80', pch=20)
+points(sites$V1[sites$V3=='Outer'], sites$V4[sites$V3=='Outer'], col='gray48', pch=20)
+points(sites$V1[sites$V3=='Trans'], sites$V4[sites$V3=='Trans'], col='black', pch=20)
+abline(h=1)
+for (n in 1:nrow(sites)){
+	if (sites$V3[n]=='Inner'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray80')
+	}
+	if (sites$V3[n]=='Outer'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray48')
+	}
+	if (sites$V3[n]=='Trans'){
+		segments(sites$V1[n],-0.05,sites$V1[n],-0.8, col='black')
+	}		
+}
+sites<-read.table('siterates/ENST00000374472.txt')
+plot(sites$V1, sites$V4, xlab='Site Index', ylab=~omega, main='CNR2', pch=20, ylim=c(-0.05,2), frame.plot=F, cex.lab=1.2)
+points(sites$V1[sites$V3=='Inner'], sites$V4[sites$V3=='Inner'], col='gray80', pch=20)
+points(sites$V1[sites$V3=='Outer'], sites$V4[sites$V3=='Outer'], col='gray48', pch=20)
+points(sites$V1[sites$V3=='Trans'], sites$V4[sites$V3=='Trans'], col='black', pch=20)
+abline(h=1)
+
+for (n in 1:nrow(sites)){
+	if (sites$V3[n]=='Inner'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray80')
+	}
+	if (sites$V3[n]=='Outer'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray48')
+	}
+	if (sites$V3[n]=='Trans'){
+		segments(sites$V1[n],-0.05,sites$V1[n],-0.8, col='black')
+	}		
+}
+sites<-read.table('siterates/ENST00000406846.txt')
+plot(sites$V1, sites$V4, xlab='Site Index', ylab=~omega, main='FSHR', pch=20, ylim=c(-0.05,2), frame.plot=F, cex.lab=1.2)
+points(sites$V1[sites$V3=='Inner'], sites$V4[sites$V3=='Inner'], col='gray80', pch=20)
+points(sites$V1[sites$V3=='Outer'], sites$V4[sites$V3=='Outer'], col='gray48', pch=20)
+points(sites$V1[sites$V3=='Trans'], sites$V4[sites$V3=='Trans'], col='black', pch=20)
+abline(h=1)
+for (n in 1:nrow(sites)){
+	if (sites$V3[n]=='Inner'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray80')
+	}
+	if (sites$V3[n]=='Outer'){
+		segments(sites$V1[n],-.05,sites$V1[n],-0.8, col='gray48')
+	}
+	if (sites$V3[n]=='Trans'){
+		segments(sites$V1[n],-0.05,sites$V1[n],-0.8, col='black')
+	}		
+}
+dev.off()
+#################
+
+
+hi=read.table('3v2w_s1pr1', header=T)
+plot(hi$RSA[hi$Part=='Extra'], hi$Omega[hi$Part=='Extra'], main='CXCR4 (3OE6)', frame.plot=F, log='y',pch=21, cex=0.8, bg='snow3', xlab='RSA', ylab=expression(~omega), ylim=c(0.01, 3), xlim=c(0,1), cex.lab=1.25)
+points(hi$RSA[hi$Part=='Trans'], hi$Omega[hi$Part=='Trans'], pch=20)
+
+
+############ RSA figure
+pdf('RSA_plots.pdf', useDingbats=F)
+par(mfrow=c(2,2))
+
+hi=read.table('OPRL1_ENST00000336866.txt', header=T)
+plot(hi$RSA[hi$Part=='Extra'], hi$Omega[hi$Part=='Extra'], main='CXCR4 (3OE6)', frame.plot=F, log='y',pch=21, cex=0.8, bg='snow3', xlab='RSA', ylab=expression(~omega), ylim=c(0.01, 3), xlim=c(0,1), cex.lab=1.25)
+points(hi$RSA[hi$Part=='Trans'], hi$Omega[hi$Part=='Trans'], pch=20)
+
+hi=read.table('DRD3_ENST00000460779.txt', header=T)
+plot(hi$RSA[hi$Part=='Extra'], hi$Omega[hi$Part=='Extra'], main='DRD3 (3PBL)', frame.plot=F, log='y',pch=21, cex=0.8, bg='snow3', xlab='RSA', ylab=expression(~omega), ylim=c(0.01, 3), xlim=c(0,1), cex.lab=1.25)
+points(hi$RSA[hi$Part=='Trans'], hi$Omega[hi$Part=='Trans'], pch=20)
+
+hi=read.table('HRH1_ENST00000438284.txt', header=T)
+plot(hi$RSA[hi$Part=='Extra'], hi$Omega[hi$Part=='Extra'], main='HRH1 (3RZE)', frame.plot=F, log='y',pch=21, cex=0.8, bg='snow3', xlab='RSA', ylab=expression(~omega), ylim=c(0.01, 3), xlim=c(0,1), cex.lab=1.25)
+points(hi$RSA[hi$Part=='Trans'], hi$Omega[hi$Part=='Trans'], pch=20)
+
+hi=read.table('OPN1SW_ENST00000249389.txt', header=T)
+plot(hi$RSA[hi$Part=='Extra'], hi$Omega[hi$Part=='Extra'], main='OPN1SW (1KPN)', frame.plot=F, log='y',pch=21, cex=0.8, bg='snow3', xlab='RSA', ylab=expression(~omega), ylim=c(0.01, 3), xlim=c(0,1.1), cex.lab=1.25)
+points(hi$RSA[hi$Part=='Trans'], hi$Omega[hi$Part=='Trans'], pch=20)
+
+dev.off()
+##################
